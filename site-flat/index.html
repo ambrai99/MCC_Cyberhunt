@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Ironwood Dynamics | Employee portal (Cyber Student Day game)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="banner"><strong>Cyber Student Day challenge.</strong> Ironwood Dynamics is a fictional company and this site is a game. Nothing you type leaves your phone.</div>
+<div class="login-wrap">
+  <section class="brand-panel">
+    <svg class="rings" viewBox="0 0 200 200" aria-hidden="true" fill="none" stroke="#9a4a1c">
+      <circle cx="100" cy="100" r="8" stroke-width="2"/><circle cx="100" cy="100" r="19" stroke-width="3"/>
+      <circle cx="100" cy="100" r="29" stroke-width="2"/><circle cx="100" cy="100" r="42" stroke-width="4"/>
+      <circle cx="100" cy="100" r="53" stroke-width="2"/><circle cx="100" cy="100" r="65" stroke-width="3"/>
+      <circle cx="100" cy="100" r="79" stroke-width="2"/><circle cx="100" cy="100" r="92" stroke-width="4"/>
+    </svg>
+    <h1>Ironwood Dynamics</h1>
+    <p>Employee portal. Sign in to reach the company intranet.</p>
+  </section>
+
+  <section class="form-panel">
+    <h2>Sign in</h2>
+    <form id="f" autocomplete="off" novalidate>
+      <label for="u">Username</label>
+      <input id="u" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+      <label for="p">Password</label>
+      <div class="pw">
+        <input id="p" type="password" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+        <button type="button" class="btn ghost" id="show" aria-pressed="false">Show</button>
+      </div>
+      <p class="help">Passwords are not case sensitive.</p>
+      <p id="msg" class="msg" role="alert"></p>
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+
+    <details class="hints" id="hints">
+      <summary>Need a hint?</summary>
+      <ol id="hintlist"></ol>
+      <button type="button" class="btn ghost" id="more">Show a hint</button>
+    </details>
+  </section>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  var u=document.getElementById('u'), p=document.getElementById('p'), msg=document.getElementById('msg');
+  document.getElementById('show').addEventListener('click',function(){
+    var showing=p.type==='text'; p.type=showing?'password':'text';
+    this.textContent=showing?'Show':'Hide'; this.setAttribute('aria-pressed',String(!showing));
+  });
+  document.getElementById('f').addEventListener('submit',function(e){
+    e.preventDefault();
+    if(IW.hh(u.value)===CONFIG.portal.user && IW.hh(p.value)===CONFIG.portal.pass){
+      IW.setFlag('iw_portal'); location.href='intranet.html';
+    } else {
+      msg.className='msg bad'; msg.textContent='Invalid username or password.';
+    }
+  });
+  var hints=[
+    'The username is hidden in your paper strip. Wrap the strip around a dowel with no gaps. Only one dowel size gives readable words.',
+    'The password is the scrambled word on your mission card. It was made with a Caesar cipher. The number in your username is the shift.',
+    'A shift of 7 means A lines up with the letter 7 places later. Set the wheel that way, find each scrambled letter on the outer ring, and read the answer on the inner ring.'
+  ], shown=0, list=document.getElementById('hintlist'), more=document.getElementById('more');
+  more.addEventListener('click',function(){
+    if(shown<hints.length){var li=document.createElement('li');li.textContent=hints[shown++];list.appendChild(li);}
+    if(shown===hints.length){more.disabled=true;more.textContent='No more hints. Ask a faculty member.';}
+  });
+})();
+</script>
+</body>
+</html>
