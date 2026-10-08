@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Ironwood Dynamics Finance portal</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="banner"><strong>Cyber Student Day: Haunted Edition.</strong> Ironwood Dynamics is a fictional company and this site is a game.</div>
+<header class="topbar"><div class="in">
+  <span class="name">Ironwood Dynamics</span>
+  <nav aria-label="Main">
+    <a href="intranet.html">Home</a>
+    <a href="employee.html" aria-current="page">Finance portal</a>
+  </nav>
+</div></header>
+
+<main class="page" style="max-width:520px">
+  <h1>Employee sign in</h1>
+  <p class="muted">Finance portal. Authorized employees only. No ghosts, goblins, or auditors without an appointment.</p>
+
+  <form id="f" autocomplete="off" novalidate>
+    <label for="u">Username</label>
+    <input id="u" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+    <p class="help">Usernames are first initial.lastname</p>
+    <label for="p">Password</label>
+    <div class="pw">
+      <input id="p" type="password" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+      <button type="button" class="btn ghost" id="show" aria-pressed="false">Show</button>
+    </div>
+    <p id="msg" class="msg" role="alert"></p>
+    <button class="btn" id="go" type="submit">Sign in</button>
+  </form>
+
+  <div id="result"></div>
+
+  <details class="hints">
+    <summary>Need a hint?</summary>
+    <ol id="hintlist"></ol>
+    <button type="button" class="btn ghost" id="more">Show a hint</button>
+  </details>
+</main>
+<footer class="site"><button type="button" onclick="IW.signOut()">Sign out and start over</button></footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+IW.guard('iw_portal');
+(function(){
+  var u=document.getElementById('u'), p=document.getElementById('p'), msg=document.getElementById('msg'),
+      go=document.getElementById('go'), result=document.getElementById('result'), timer=null;
+
+  document.getElementById('show').addEventListener('click',function(){
+    var showing=p.type==='text'; p.type=showing?'password':'text';
+    this.textContent=showing?'Show':'Hide'; this.setAttribute('aria-pressed',String(!showing));
+  });
+
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+  function renderLock(){
+    var r=IW.Lock.remaining();
+    if(r>0){
+      go.disabled=true; u.disabled=true; p.disabled=true;
+      result.innerHTML='<div class="panel lock"><h3>Account locked <span aria-hidden="true">👻</span></h3><p>Too many failed attempts. Try again in <strong>'+r+
+        ' seconds</strong>.</p><p class="muted">This is a real security control. Lockouts stop attackers from guessing thousands of passwords.</p></div>';
+      msg.textContent='';
+      if(!timer) timer=setInterval(renderLock,500);
+    } else {
+      if(timer){clearInterval(timer);timer=null;}
+      go.disabled=false; u.disabled=false; p.disabled=false;
+      if(result.querySelector('.lock')) result.innerHTML='';
+    }
+  }
+  renderLock();
+
+  document.getElementById('f').addEventListener('submit',function(e){
+    e.preventDefault();
+    if(IW.Lock.remaining()>0) return;
+    result.innerHTML='';
+    var uh=IW.hh(u.value), ph=IW.hh(p.value);
+    var acct=CONFIG.accounts.filter(function(a){return a.user===uh && a.pass.indexOf(ph)!==-1;})[0];
+    if(!acct){
+      var f=IW.Lock.fail();
+      if(f.locked){ renderLock(); return; }
+      msg.className='msg bad';
+      msg.textContent='Invalid username or password.'+(f.left<CONFIG.maxAttempts?' '+f.left+(f.left===1?' attempt':' attempts')+' left before lockout.':'');
+      return;
+    }
+    IW.Lock.clear();
+    if(acct.role==='finance'){
+      IW.setFlag('iw_finance'); location.href='report.html'; return;
+    }
+    msg.textContent='';
+    result.innerHTML='<div class="panel wrong"><h3>Access denied</h3><p>You signed in as <strong>'+esc(acct.name)+'</strong> ('+esc(acct.title)+
+      '). Your login is correct, but this account has no permission to open the Finance Q3 report.</p><p>Nice work, wrong target. Try another employee.</p></div>';
+    p.value=''; u.value='';
+  });
+
+  var hints=[
+    'Which employee works in Finance? Check the staff directory on the intranet home page.',
+    'Open that employee\'s Skyline Social profile. Look for pet names and dates. Not every pet or date will work.',
+    'Try the Finance employee\'s dog. Read the newest posts carefully.'
+  ], shown=0, list=document.getElementById('hintlist'), more=document.getElementById('more');
+  more.addEventListener('click',function(){
+    if(shown<hints.length){var li=document.createElement('li');li.textContent=hints[shown++];list.appendChild(li);}
+    if(shown===hints.length){more.disabled=true;more.textContent='No more hints. Ask a faculty member.';}
+  });
+})();
+</script>
+<footer class="mcc"><strong>Mesa Community College Cybersecurity</strong> &middot; Cyber Student Day: Haunted Edition. Ask a faculty member how to turn this into a career.</footer>
+</body>
+</html>

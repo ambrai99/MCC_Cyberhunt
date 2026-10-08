@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Ironwood Dynamics | Employee portal (Cyber Student Day game)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="banner"><strong>Cyber Student Day: Haunted Edition.</strong> Ironwood Dynamics is a fictional company and this site is a game. Nothing you type leaves your phone.</div>
+<div class="login-wrap">
+  <section class="brand-panel">
+    <svg class="scene" viewBox="0 0 400 560" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff9a3c" stop-opacity=".55"/><stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/></radialGradient>
+        <radialGradient id="moonglow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff2c9" stop-opacity=".35"/><stop offset="1" stop-color="#fff2c9" stop-opacity="0"/></radialGradient>
+        <symbol id="bat" viewBox="-32 -14 64 30"><path d="M0,0 C-6,-9 -20,-12 -31,-3 C-24,-3 -20,1 -18,6 C-14,2 -10,2 -7,6 L0,13 L7,6 C10,2 14,2 18,6 C20,1 24,-3 31,-3 C20,-12 6,-9 0,0Z"/></symbol>
+      </defs>
+      <circle cx="318" cy="92" r="92" fill="url(#moonglow)"/>
+      <circle cx="318" cy="92" r="40" fill="#fff0c2"/>
+      <circle cx="304" cy="80" r="7" fill="#f2dca0"/><circle cx="332" cy="104" r="5" fill="#f2dca0"/><circle cx="322" cy="70" r="3.5" fill="#f2dca0"/>
+      <g fill="#05081a">
+        <use class="bat" href="#bat" x="238" y="46" width="44" height="21"/>
+        <use class="bat b2" href="#bat" x="372" y="170" width="34" height="16"/>
+        <use class="bat b3" href="#bat" x="270" y="146" width="28" height="13"/>
+      </g>
+      <circle cx="300" cy="470" r="110" fill="url(#glow)"/>
+      <path d="M0,520 C70,480 130,500 200,486 C270,472 330,498 400,478 L400,560 L0,560Z" fill="#050818"/>
+      <g fill="#050818"><rect x="38" y="468" width="18" height="40" rx="9"/><rect x="74" y="480" width="14" height="30" rx="7"/>
+        <path d="M150,486 l0,-30 l-8,0 l12,-16 l12,16 l-8,0 l0,30z"/></g>
+      <g transform="translate(300 462)">
+        <ellipse cx="0" cy="0" rx="58" ry="46" fill="#e8650a"/>
+        <path d="M-30,-44 C-52,-20 -52,20 -30,44 M30,-44 C52,-20 52,20 30,44 M0,-46 L0,46" fill="none" stroke="#b44a00" stroke-width="3"/>
+        <rect x="-5" y="-62" width="10" height="20" rx="3" fill="#2d6a2d"/>
+        <path d="M-28,-14 L-14,-14 L-21,-28Z M14,-14 L28,-14 L21,-28Z" fill="#ffe08a"/>
+        <path d="M-26,8 L-16,20 L-8,10 L0,22 L8,10 L16,20 L26,8 L26,24 L-26,24Z" fill="#ffe08a"/>
+      </g>
+    </svg>
+    <p class="eyebrow">Mesa Community College Cybersecurity presents</p>
+    <h1>Ironwood Dynamics</h1>
+    <p>Employee portal. Something has been moving files after midnight. Sign in to find out what.</p>
+  </section>
+
+  <section class="form-panel">
+    <h2>Sign in, if you dare</h2>
+    <form id="f" autocomplete="off" novalidate>
+      <label for="u">Username</label>
+      <input id="u" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+      <label for="p">Password</label>
+      <div class="pw">
+        <input id="p" type="password" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+        <button type="button" class="btn ghost" id="show" aria-pressed="false">Show</button>
+      </div>
+      <p class="help">Passwords are not case sensitive.</p>
+      <p id="msg" class="msg" role="alert"></p>
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+
+    <details class="hints" id="hints">
+      <summary>Need a hint?</summary>
+      <ol id="hintlist"></ol>
+      <button type="button" class="btn ghost" id="more">Show a hint</button>
+    </details>
+    <p style="margin-top:1rem"><a href="decoder.html">Open the Caesar decoder</a></p>
+  </section>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  var u=document.getElementById('u'), p=document.getElementById('p'), msg=document.getElementById('msg');
+  document.getElementById('show').addEventListener('click',function(){
+    var showing=p.type==='text'; p.type=showing?'password':'text';
+    this.textContent=showing?'Show':'Hide'; this.setAttribute('aria-pressed',String(!showing));
+  });
+  document.getElementById('f').addEventListener('submit',function(e){
+    e.preventDefault();
+    if(IW.hh(u.value)===CONFIG.portal.user && IW.hh(p.value)===CONFIG.portal.pass){
+      IW.setFlag('iw_portal'); location.href='intranet.html';
+    } else {
+      msg.className='msg bad'; msg.textContent='Invalid username or password.';
+    }
+  });
+  var hints=[
+    'The username is hidden in your paper strip. Wrap the strip around a dowel with no gaps. Only one dowel size gives readable words.',
+    'The password is the scrambled word on your mission card. It was made with a Caesar cipher. The number in your username is the shift.',
+    'A shift of 7 means A lines up with the letter 7 places later. Set the wheel that way, find each scrambled letter on the outer ring, and read the answer on the inner ring.'
+  ], shown=0, list=document.getElementById('hintlist'), more=document.getElementById('more');
+  more.addEventListener('click',function(){
+    if(shown<hints.length){var li=document.createElement('li');li.textContent=hints[shown++];list.appendChild(li);}
+    if(shown===hints.length){more.disabled=true;more.textContent='No more hints. Ask a faculty member.';}
+  });
+})();
+</script>
+<footer class="mcc"><strong>Mesa Community College Cybersecurity</strong> &middot; Cyber Student Day: Haunted Edition. Ask a faculty member how to turn this into a career.</footer>
+</body>
+</html>

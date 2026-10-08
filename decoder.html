@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Caesar decoder | Cyber Student Day</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .dec{max-width:560px;margin:1.5rem auto 3rem;padding:0 1rem}
+  .shift{display:flex;align-items:center;gap:.8rem;margin:.3rem 0}
+  .shift .btn{min-width:52px;font-size:1.4rem;padding:.3rem .8rem}
+  .shift output{font:700 2rem var(--mono);min-width:2.4ch;text-align:center}
+  .result{background:var(--night2);border:1px solid var(--edge);color:#f1eefb;border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0;min-height:4.5rem}
+  .result small{color:#aab4d4}
+  .result .out{font:700 clamp(1.8rem,9vw,2.6rem)/1.2 var(--mono);letter-spacing:.06em;word-break:break-all;margin-top:.2rem}
+  .map{display:grid;grid-template-columns:repeat(13,1fr);gap:2px;font:600 .85rem var(--mono);text-align:center;margin-top:.5rem}
+  .map span{padding:.25rem 0;background:#fff;color:#1b1530;border:1px solid var(--line)}
+  .map span.p{background:#ffb877;color:#2a1200;font-weight:700}
+  .seg{display:flex;gap:.5rem;margin-top:.3rem}
+  .seg label{margin:0;font-weight:500;display:flex;align-items:center;gap:.4rem}
+</style>
+</head>
+<body>
+<div class="banner"><strong>Cyber Student Day: Haunted Edition.</strong> Nothing you type here leaves your phone.</div>
+<main class="dec">
+  <h1>Caesar decoder</h1>
+  <p class="muted">A Caesar cipher shifts every letter a set number of places. Type the scrambled letters, choose the shift, and read the answer.</p>
+
+  <label for="t">Scrambled letters</label>
+  <input id="t" type="text" autocapitalize="characters" autocorrect="off" spellcheck="false" autocomplete="off">
+
+  <label for="n">Shift</label>
+  <div class="shift">
+    <button type="button" class="btn ghost" id="minus" aria-label="Lower shift">&minus;</button>
+    <output id="n" for="minus plus">3</output>
+    <button type="button" class="btn ghost" id="plus" aria-label="Raise shift">+</button>
+  </div>
+
+  <div class="seg" role="radiogroup" aria-label="Direction">
+    <label><input type="radio" name="d" value="dec" checked> Decode</label>
+    <label><input type="radio" name="d" value="enc"> Encode</label>
+  </div>
+
+  <div class="result" aria-live="polite">
+    <small>Result</small>
+    <div class="out" id="out">&nbsp;</div>
+  </div>
+
+  <h2 style="font-size:1rem">How the shift lines up</h2>
+  <p class="muted" id="maplabel" style="margin:.2rem 0"></p>
+  <div class="map" id="map" aria-hidden="true"></div>
+
+  <p style="margin-top:2rem"><a href="index.html">Back to the sign in page</a></p>
+</main>
+<script>
+(function(){
+  var AB='ABCDEFGHIJKLMNOPQRSTUVWXYZ', shift=3, t=document.getElementById('t'),
+      out=document.getElementById('out'), nEl=document.getElementById('n');
+  function dir(){return document.querySelector('input[name=d]:checked').value;}
+  function conv(s,k){
+    return s.toUpperCase().split('').map(function(c){
+      var i=AB.indexOf(c); if(i<0) return c;
+      return AB[((i+k)%26+26)%26];
+    }).join('');
+  }
+  function render(){
+    nEl.textContent=shift;
+    var k=dir()==='dec'?-shift:shift;
+    out.textContent=t.value?conv(t.value,k):'\u00a0';
+    var top='',bot='';
+    document.getElementById('maplabel').textContent=(dir()==='dec'?'Top row is the scrambled letter. Bottom row is the real letter.':'Top row is the real letter. Bottom row is the scrambled letter.');
+    var h='';
+    for(var half=0;half<2;half++){
+      for(var i=half*13;i<half*13+13;i++) h+='<span>'+AB[i]+'</span>';
+      for(var j=half*13;j<half*13+13;j++) h+='<span class="p">'+AB[((j+k)%26+26)%26]+'</span>';
+    }
+    document.getElementById('map').innerHTML=h;
+  }
+  document.getElementById('minus').addEventListener('click',function(){shift=(shift+25)%26;render();});
+  document.getElementById('plus').addEventListener('click',function(){shift=(shift+1)%26;render();});
+  t.addEventListener('input',render);
+  Array.prototype.forEach.call(document.querySelectorAll('input[name=d]'),function(r){r.addEventListener('change',render);});
+  render();
+})();
+</script>
+<footer class="mcc"><strong>Mesa Community College Cybersecurity</strong> &middot; Cyber Student Day: Haunted Edition. Ask a faculty member how to turn this into a career.</footer>
+</body>
+</html>

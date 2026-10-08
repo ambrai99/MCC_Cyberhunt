@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Staff code words</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="banner"><strong>Faculty page.</strong> Accept the current word or the previous word.</div>
+<main class="page" style="max-width:640px">
+  <h1>Code word right now</h1>
+  <div class="staffcard"><div class="bigword" id="cur">...</div>
+    <p class="muted" id="left"></p></div>
+  <div class="staffcard prev"><p style="margin:0">Also valid (previous window)</p><div class="bigword" id="prev">...</div></div>
+
+  <h2 style="margin-top:2rem">Schedule for the next 4 hours</h2>
+  <p class="muted">Every word is valid for its window plus the next one.</p>
+  <table class="sched" id="sched"></table>
+</main>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  function tick(){
+    document.getElementById('cur').textContent=IW.wordFor(0);
+    document.getElementById('prev').textContent=IW.wordFor(-1);
+    var s=Math.ceil(IW.msToNext()/1000), m=Math.floor(s/60);
+    document.getElementById('left').textContent='Changes in '+m+':'+IW.two(s%60);
+  }
+  function schedule(){
+    var w=IW.windowMs(), base=IW.windowIndex(0), rows='';
+    var n=Math.ceil(4*3600000/w);
+    for(var i=0;i<=n;i++){
+      var idx=base+i, start=new Date(idx*w), end=new Date((idx+1)*w);
+      rows+='<tr><td>'+IW.clock(start)+' to '+IW.clock(end)+'</td><td><strong>'+IW.wordForIndex(idx)+'</strong></td></tr>';
+    }
+    document.getElementById('sched').innerHTML=rows;
+  }
+  tick(); schedule(); setInterval(tick,1000); setInterval(schedule,60000);
+})();
+</script>
+<footer class="mcc"><strong>Mesa Community College Cybersecurity</strong> &middot; Cyber Student Day: Haunted Edition. Ask a faculty member how to turn this into a career.</footer>
+</body>
+</html>

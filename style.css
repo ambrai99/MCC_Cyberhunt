@@ -1,0 +1,186 @@
+/* Cyber Student Day: Haunted Edition. Mesa CC blue + pumpkin on a midnight sky. */
+:root{
+  --night:#0b1024; --night2:#131b38; --night3:#1b2650; --edge:#2a3870;
+  --mcc:#004C97; --mcc-light:#8cc4ff;
+  --pumpkin:#ff7a1a; --pumpkin-light:#ffb877; --pumpkin-deep:#e0620a;
+  --ghost:#f1eefb; --ink:#eee9fa; --muted:#aab4d4; --dark:#1b1530;
+  --good:#7ee2a8; --alert:#ff8f85; --sky:#2f6f9a;
+  --font:"Avenir Next","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --display:Georgia,"Times New Roman",serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  /* legacy names used by a few inline styles */
+  --bark:#131b38; --line:#2a3870; --copper:#ffb877; --copper-light:#ffb877; --sage:#7ee2a8; --paper:#131b38;
+}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0;font:16px/1.55 var(--font);color:var(--ink);-webkit-text-size-adjust:100%;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 18%,#fff8 50%,transparent 51%),
+    radial-gradient(1.5px 1.5px at 78% 9%,#fff8 50%,transparent 51%),
+    radial-gradient(1px 1px at 46% 31%,#fff6 50%,transparent 51%),
+    radial-gradient(1px 1px at 90% 44%,#fff6 50%,transparent 51%),
+    radial-gradient(1.5px 1.5px at 24% 62%,#fff7 50%,transparent 51%),
+    radial-gradient(1px 1px at 64% 78%,#fff6 50%,transparent 51%),
+    radial-gradient(1px 1px at 8% 91%,#fff6 50%,transparent 51%),
+    linear-gradient(180deg,#0b1024 0%,#0e1738 60%,#101a40 100%) fixed;
+  background-color:var(--night)}
+h1,h2,h3{line-height:1.2;margin:0 0 .5rem}
+h1,h2{font-family:var(--display)}
+h1{text-shadow:0 0 18px #ff7a1a55}
+a{color:var(--mcc-light)}
+:focus-visible{outline:3px solid var(--pumpkin-light);outline-offset:2px}
+.muted{color:var(--muted)}
+.sr{position:absolute;left:-9999px}
+
+/* Game notice, on every page */
+.banner{background:var(--mcc);color:#fff;font-size:.85rem;padding:.55rem 1rem;text-align:center;border-bottom:2px solid var(--pumpkin)}
+.banner strong{color:var(--pumpkin-light);font-weight:700}
+
+/* Buttons and fields */
+.btn{display:inline-block;background:var(--pumpkin);color:#1a0d00;border:0;border-radius:8px;
+  font:700 1rem var(--font);padding:.8rem 1.3rem;min-height:48px;cursor:pointer;text-decoration:none;
+  box-shadow:0 0 0 0 #ff7a1a00;transition:box-shadow .2s,background .2s}
+.btn:hover{background:var(--pumpkin-light);box-shadow:0 0 16px #ff7a1a88}
+.btn[disabled]{background:#4a5170;color:#aeb4cc;cursor:not-allowed;box-shadow:none}
+.btn.ghost{background:transparent;color:var(--pumpkin-light);border:2px solid var(--pumpkin)}
+.btn.ghost:hover{background:#ff7a1a22}
+label{display:block;font-weight:600;margin:1rem 0 .3rem}
+input[type=text],input[type=password]{width:100%;font:1rem var(--font);min-height:48px;padding:.6rem .8rem;
+  border:2px solid #5d6aa3;border-radius:8px;background:#fff;color:var(--dark)}
+input:focus{border-color:var(--pumpkin)}
+.help{font-size:.88rem;color:var(--muted);margin:.3rem 0 0}
+.pw{display:flex;gap:.5rem}
+.pw .btn{padding:.4rem .9rem;min-height:48px}
+.msg{min-height:1.5em;margin:.9rem 0 0;font-weight:600}
+.msg.bad{color:var(--alert)}
+.msg.good{color:var(--good)}
+
+/* Hints */
+.hints{margin-top:1.5rem;border-top:1px solid var(--edge);padding-top:1rem}
+.hints summary{cursor:pointer;font-weight:600;color:var(--pumpkin-light)}
+.hints ol{padding-left:1.2rem;margin:.8rem 0}
+.hints li{margin:.4rem 0}
+.hints .btn{margin-top:.4rem;padding:.5rem 1rem;min-height:40px}
+
+/* Login page */
+.login-wrap{min-height:calc(100vh - 38px);display:grid;grid-template-columns:1.05fr 1fr}
+.brand-panel{background:linear-gradient(170deg,#06102e 0%,#0a1f55 55%,#0b2a6b 100%);color:var(--ghost);padding:3rem;
+  display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;border-right:3px solid var(--mcc)}
+.brand-panel .eyebrow{font:700 .78rem var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--pumpkin-light);margin:0 0 .6rem;position:relative}
+.brand-panel h1{font-size:clamp(2.1rem,5.5vw,3.3rem);letter-spacing:-.01em;position:relative;
+  text-shadow:0 0 22px #ff7a1a88;animation:flicker 5s infinite}
+.brand-panel p{margin:.4rem 0;color:#d6dcf3;position:relative;max-width:32ch}
+.brand-panel .scene{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.brand-panel .bat{animation:flap 6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.brand-panel .bat.b2{animation-duration:8s;animation-delay:-3s}
+.brand-panel .bat.b3{animation-duration:7s;animation-delay:-5s}
+@keyframes flap{0%,100%{transform:translate(0,0)}50%{transform:translate(22px,-12px)}}
+@keyframes flicker{0%,18%,22%,62%,66%,100%{opacity:1}20%{opacity:.82}64%{opacity:.9}}
+.form-panel{padding:3rem 2rem;display:flex;flex-direction:column;justify-content:center;max-width:470px;width:100%;margin:0 auto}
+.form-panel h2{font-size:1.7rem}
+@media(max-width:760px){
+  .login-wrap{grid-template-columns:1fr}
+  .brand-panel{padding:1.8rem 1.25rem 8.5rem;min-height:21rem;border-right:0;border-bottom:3px solid var(--mcc)}
+  .form-panel{padding:1.5rem 1.25rem 2.5rem}
+}
+
+/* Intranet shell */
+.topbar{background:var(--mcc);color:#fff;border-bottom:4px solid var(--pumpkin);position:relative;overflow:hidden}
+.topbar::after{content:"";position:absolute;top:0;right:0;width:84px;height:84px;opacity:.28;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='white' stroke-width='1.4'%3E%3Cpath d='M100 0 L0 0 M100 0 L0 30 M100 0 L0 62 M100 0 L18 100 M100 0 L52 100 M100 0 L100 100'/%3E%3Cpath d='M82 0 Q76 14 100 18 M62 0 Q52 22 100 36 M40 0 Q30 34 100 56'/%3E%3C/svg%3E") no-repeat right top/contain}
+.topbar .in{max-width:960px;margin:auto;display:flex;align-items:center;gap:1rem;padding:.7rem 1rem;flex-wrap:wrap;position:relative;z-index:1}
+.topbar .name{font:700 1.15rem var(--display)}
+.topbar nav{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap;margin-right:50px}
+.topbar a{color:#fff;text-decoration:none;padding:.3rem 0}
+.topbar a:hover,.topbar a[aria-current]{text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--pumpkin)}
+.page{max-width:960px;margin:1.5rem auto 3rem;padding:0 1rem}
+.hero{background:var(--night2);border:1px solid var(--edge);border-radius:12px;padding:1.4rem 1.4rem 1.6rem;margin-bottom:1.2rem}
+.hero h1{font-size:1.7rem}
+.mission{background:linear-gradient(135deg,#23100a,#2d1606);color:#ffe9d2;border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:1.5rem;
+  border:1px solid #6b3410;border-left:6px solid var(--pumpkin);box-shadow:0 0 24px #ff7a1a22}
+.mission h2{color:var(--pumpkin-light);font-size:1.15rem}
+.mission p{margin:.3rem 0}
+.post{background:var(--night2);border:1px solid var(--edge);border-left:5px solid var(--mcc-light);border-radius:8px;padding:1rem 1.1rem;margin:0 0 1rem}
+.post.it{border-left-color:var(--pumpkin)}
+.post h3{font-size:1.05rem}
+.post .meta{font-size:.85rem;color:var(--muted);margin:0 0 .4rem}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.person{background:var(--night2);border:1px solid var(--edge);border-radius:10px;padding:1rem 1.1rem}
+.person .initials{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;margin-bottom:.6rem;border:2px solid var(--pumpkin)}
+.person h3{margin:0}
+.person p{margin:.15rem 0 .6rem}
+footer.site{max-width:960px;margin:0 auto 2rem;padding:0 1rem;font-size:.85rem;color:var(--muted)}
+footer.site button{background:none;border:0;color:var(--pumpkin-light);text-decoration:underline;font:inherit;cursor:pointer;padding:0}
+
+/* Mesa CC strip on every page */
+footer.mcc{background:var(--mcc);color:#fff;text-align:center;font-size:.85rem;padding:.8rem 1rem;border-top:3px solid var(--pumpkin);margin-top:2rem}
+footer.mcc strong{color:var(--pumpkin-light)}
+
+/* Result panels */
+.panel{border-radius:10px;padding:1rem 1.2rem;margin:1rem 0;border:2px solid}
+.panel.wrong{background:#2b2108;border-color:#d99a1e;color:#ffeab8}
+.panel.lock{background:#311015;border-color:var(--alert);color:#ffe2df}
+.panel .muted{color:inherit;opacity:.85}
+.panel h3{margin:0 0 .3rem}
+
+/* Skyline Social profiles: a separate (fictional) site, so it keeps its own light look */
+body.social{background:#e6eef4;color:#1f2528;color-scheme:light}
+body.social a{color:#1d5a82}
+body.social .banner{background:var(--mcc)}
+.sbar{background:var(--sky);color:#fff}
+.sbar .in{max-width:720px;margin:auto;padding:.7rem 1rem;display:flex;gap:1rem;align-items:center}
+.sbar a{color:#fff}
+.sbar .logo{font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+.profile{max-width:720px;margin:0 auto 3rem;padding:0 0 1rem}
+.cover{height:120px;background:var(--cover,#2f6f9a)}
+.head{background:#fff;padding:0 1.2rem 1.2rem;border-bottom:1px solid #d3dde5}
+.avatar{width:92px;height:92px;border-radius:50%;border:4px solid #fff;margin-top:-46px;display:grid;place-items:center;
+  font-size:1.9rem;font-weight:700;color:#fff;background:var(--cover,#2f6f9a)}
+.head h1{margin:.5rem 0 0;font-size:1.5rem;font-family:var(--font);text-shadow:none}
+.head .line{color:#4a5a66;margin:.1rem 0}
+.head .bio{margin:.7rem 0 0}
+.feed{padding:1rem}
+.spost{background:#fff;border:1px solid #d3dde5;border-radius:10px;padding:.9rem 1.1rem;margin-bottom:.8rem}
+.spost .when{font-size:.82rem;color:#5d6d79;margin:0 0 .3rem}
+.spost p{margin:.2rem 0}
+.spost .react{font-size:.85rem;color:#5d6d79;margin-top:.5rem}
+.feed h2{font-size:1rem;color:#35505f;margin:0 0 .6rem;font-family:var(--font)}
+
+/* Final page: the ID badge */
+body.final{background:radial-gradient(ellipse at 50% 0%,#2a1606 0%,#0b1024 60%) fixed;background-color:var(--night);color:var(--ink)}
+.report{background:#fbf8f2;color:#1f2528;border-radius:10px;padding:1.2rem 1.4rem;margin:1.2rem 0}
+.report table{width:100%;border-collapse:collapse;font-size:.95rem}
+.report th,.report td{text-align:left;padding:.45rem .3rem;border-bottom:1px solid #d9cfbd}
+.report td.num{text-align:right;font-variant-numeric:tabular-nums}
+.stamp{display:inline-block;border:3px solid #b3261e;color:#b3261e;font-weight:800;padding:.1rem .7rem;
+  border-radius:6px;transform:rotate(-4deg);margin-bottom:.8rem}
+.badge-wrap{display:flex;flex-direction:column;align-items:center;margin:2rem 0}
+.badge{width:min(100%,360px);background:#fff;color:var(--dark);border-radius:18px;padding:3.2rem 1.5rem 1.6rem;position:relative;
+  text-align:center;box-shadow:0 0 0 6px var(--pumpkin),0 0 34px 6px #ff7a1a88;overflow:hidden}
+.badge::before{content:"";position:absolute;top:1.1rem;left:50%;width:74px;height:14px;margin-left:-37px;border-radius:8px;background:var(--mcc)}
+.badge::after{content:"";position:absolute;left:0;right:0;bottom:0;height:8px;background:repeating-linear-gradient(90deg,var(--mcc) 0 18px,var(--pumpkin) 18px 36px)}
+.badge .co{font-weight:700;color:var(--mcc);font-family:var(--display)}
+.badge .ed{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#a24a00;font-weight:700}
+.badge .who{font-size:1.5rem;font-weight:700;margin:.6rem 0 0;word-break:break-word}
+.badge .role{color:#59546e;margin:0 0 1rem}
+.badge .code{font:700 clamp(2.4rem,13vw,3.6rem)/1 var(--mono);letter-spacing:.04em;margin:.4rem 0;word-break:break-all;color:#003d7a}
+.badge .time{font:.95rem var(--mono);color:#59546e;margin-bottom:.4rem}
+.badge.reveal{animation:pop .5s ease-out}
+@keyframes pop{from{transform:scale(.92) rotate(-2deg);opacity:0}to{transform:none;opacity:1}}
+.careers{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1rem 0 2rem}
+.careers div{background:var(--night2);border:1px solid var(--edge);border-radius:10px;padding:1rem 1.1rem}
+.careers h3{font-size:1rem;color:var(--pumpkin-light)}
+.careers p{margin:.2rem 0;color:#d6dcf3}
+.finalcta{background:linear-gradient(135deg,var(--mcc),#0a3a78);color:#fff;border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:2rem;border:2px solid var(--pumpkin)}
+.finalcta a{color:#fff}
+.finalcta h2{font-size:1.3rem}
+
+/* Staff page */
+.bigword{font:700 clamp(3rem,16vw,6rem)/1 var(--mono);letter-spacing:.04em;margin:.2rem 0 .8rem;color:var(--pumpkin-light)}
+.staffcard{background:var(--night2);border:1px solid var(--edge);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0}
+.staffcard.prev .bigword{font-size:clamp(2rem,10vw,3.4rem);color:var(--muted)}
+.sched td{padding:.35rem .8rem .35rem 0;font-family:var(--mono)}
+
+@media (prefers-reduced-motion:reduce){
+  .badge.reveal,.brand-panel h1,.brand-panel .bat{animation:none}
+}
